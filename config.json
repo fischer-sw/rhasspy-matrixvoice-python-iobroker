@@ -1,0 +1,32 @@
+{
+    "rhasspy": {
+        "master": {
+            "host": "raspihz",
+            "id": "master"
+        },
+        "slave": { 
+            "host": "raspi11",
+            "id": "client1"
+        }
+    },
+    "iobroker": {
+        "host": "192.168.137.83",
+        "port": 8082
+    },
+    "mqtt": {
+        "host": "192.168.137.83",
+        "user": "pi",
+        "password": "raspberry"
+    },
+    "topics": {
+        "hermes/asr/startListening" : "start_listening",
+        "hermes/asr/stopListening" : "stop_listening",
+        "hermes/nlu/intentParsed" : "on_intent"
+    },
+    "actions": {
+        "GetTime": "say|%-H Uhr %-M",
+        "GetDate": "say|%A %-d %B",
+        "GetTemp": "say|Es sind {pilight.0.weather4.temperature} Grad",
+        "Switch": ""
+    }
+}
