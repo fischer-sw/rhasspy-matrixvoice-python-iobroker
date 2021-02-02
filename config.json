@@ -24,9 +24,10 @@
         "hermes/nlu/intentParsed" : "on_intent"
     },
     "actions": {
+        "GetClimate": "say|Es sind {pilight.0.weather4.temperature:.0f} Grad und {pilight.0.weather4.humidity} Prozent Luftfeuchtigkeit",
         "GetTime": "say|%-H Uhr %-M",
         "GetDate": "say|%A %-d %B",
-        "GetTemp": "say|Es sind {pilight.0.weather4.temperature} Grad",
+        "GetTemp": "say|Es sind {pilight.0.weather4.temperature:.0f} Grad",
         "Switch": ""
     }
 }

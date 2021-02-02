@@ -26,8 +26,20 @@ class Recognizer(rhasspy_matrix_voice.RhasspyMatrixVoice):
     def intent_action(self, intent, conf, slots):
         if conf > 0.9:
             now = datetime.datetime.now()
-            if intent.startswith('Get'):
+            if intent == 'Alarm':
+                colors = { 'gelber' : 'yellow', 'roter' : 'red', 'schwarzer' : 'black' }
+                self.say(slots['color'] + ' Alarm')
+                mv_utils.led_blink(colors[slots['color']], 10)
+            elif intent.startswith('Get'):
                 action = self.config["actions"][intent].split('|')
+                if intent.endswith('Climate'):
+                    m = re.match('.*{([^}]+)}.*{([^}]+)}.*', action[1])
+                    if m:
+                        temp_id = m.group(1)
+                        humid_id = m.group(2)
+                    temp = self.iobroker.get_value(temp_id)
+                    humid = self.iobroker.get_value(humid_id)
+                    self.say(action[1].replace(temp_id, '').replace(humid_id, '').format(temp, humid))
                 if intent.endswith('Time'):
                     self.say(now.strftime(action[1]))
                 elif intent.endswith('Date'):
