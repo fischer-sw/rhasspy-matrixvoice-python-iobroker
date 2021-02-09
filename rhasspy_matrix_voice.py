@@ -60,6 +60,7 @@ class RhasspyMatrixVoice:
         if not self.blink_thread is None:
             return
         self.log.info("Listening started")
+        self.display("Listen...")
         self.stop_thread = False
         self.blink_thread = threading.Thread(target=self.listening)
         self.blink_thread.start()
@@ -72,6 +73,13 @@ class RhasspyMatrixVoice:
         self.blink_thread = None
         mv_utils.led_reset()
         self.log.info("Listening stopped")
+        self.display("Listen done")
+
+    def display(self, message):
+        if 'display' in self.config.keys():
+            topic = self.config['display']['topic']
+            self.log.debug('MQTT: {} {}'.format(topic, message))
+            self.mqtt.publish(topic, message.encode())
 
     def say(self, text):
         topic = "hermes/tts/say"

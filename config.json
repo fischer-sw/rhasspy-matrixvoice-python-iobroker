@@ -9,6 +9,9 @@
             "id": "client1"
         }
     },
+    "display": {
+        "topic": "d1mini_az_display/message"
+    },
     "iobroker": {
         "host": "192.168.137.83",
         "port": 8082
@@ -24,10 +27,104 @@
         "hermes/nlu/intentParsed" : "on_intent"
     },
     "actions": {
-        "GetClimate": "say|Es sind {pilight.0.weather4.temperature:.0f} Grad und {pilight.0.weather4.humidity} Prozent Luftfeuchtigkeit",
-        "GetTime": "say|%-H Uhr %-M",
-        "GetDate": "say|%A %-d %B",
-        "GetTemp": "say|Es sind {pilight.0.weather4.temperature:.0f} Grad",
-        "Switch": ""
+        "GetClimate": [ 
+            { "display": [ "{room.temp:.0f}C {room.humid:.0f}%" ] },
+            { "say": [ "Es sind {room.temp:.0f} Grad", " und {room.humid:.0f} Prozent Luftfeuchtigkeit" ] }
+        ],
+        "GetTime": [ 
+            { "display": [ "%H Uhr %M" ] },
+            { "say": [ "Es ist %-H Uhr %-M" ] }
+        ],
+        "GetDate": [ 
+            { "display": [ "%a %-d. %b" ] },
+            { "say": [ "Heute ist %A der %-d %B" ] }
+        ],
+        "GetRoomHumid": [ 
+            { "display": [ "{room.humid:.0f}%" ] },
+            { "say": [ "Es sind {room.humid:.0f} Prozent Luftfeuchtigkeit" ] }
+        ],
+        "GetRoomTemp": [ 
+            { "display": [ "{room.temp:.0f}C" ] },
+            { "say": [ "Es sind {room.temp:.0f} Grad" ] }
+        ],
+        "GetTemp": [ 
+            { "display": [ "{room.temp:.0f}C" ] },
+            { "say": [ "Es sind {room.temp:.0f} Grad" ] }
+        ],
+        "Switch": [
+            { "display": [ "{device} {state}" ] },
+            { "switch": [ "{device.id}={state}" ] }
+        ]
+    },
+    "colors": {
+        "blauer" : "blue",
+        "gelber" : "yellow",
+        "grüner": "green",
+        "roter" : "red",
+        "schwarzer" : "black" 
+    },
+    "room_climate":{
+        "arbeitszimmer": {
+            "room.temp": "javascript.0.sensor.dht22.1.temp", 
+            "room.humid": "javascript.0.sensor.dht22.1.humid" 
+        },
+        "badezimmer": {
+            "room.temp": "pilight.0.weather1.temperature", 
+            "room.humid": "pilight.0.weather1.humidity" 
+        },
+        "dachboden": { 
+            "room.temp": "pilight.0.weather2.temperature", 
+            "room.humid": "pilight.0.weather2.humidity"
+        },
+        "daniels zimmer": {
+            "room.temp": "fhem.1.HM_6395CD.measured-temp" 
+        },
+        "esszimmer": {
+            "room.temp": "fhem.1.HM_502C48.measured-temp" 
+        },
+        "flachdach": {
+            "room.temp": "pilight.0.weather4.temperature", 
+            "room.humid": "pilight.0.weather4.humidity"
+        },
+        "flur": {
+            "room.temp": "fritzdect.0.DECT100_087610998979.temp"
+        },
+        "küche": {
+            "room.temp": "fhem.1.HM_5020AB.measured-temp" 
+        },
+        "martins zimmer": {
+            "room.temp": "pilight.0.weather5.temperature",
+            "room.humid": "pilight.0.weather5.humidity"
+        },
+        "schlafzimmer": {
+            "room.temp": "fhem.1.HM_519E2B.measured-temp"
+        },
+        "terrasse": {
+            "room.temp": "pilight.0.weather3.temperature", 
+            "room.humid": "pilight.0.weather3.humidity"
+        },
+        "waschkeller": {
+            "room.temp": "javascript.0.sensor.dht22.2.temp",
+            "room.humid": "javascript.0.sensor.dht22.2.humid"
+        },
+        "wohnzimmer": {
+            "room.temp": "node-red.0.Haus.Erdgeschoss.Wohnzimmer.MediaNetzwerk.Temperatur",
+            "room.humid": "node-red.0.Haus.Erdgeschoss.Wohnzimmer.MediaNetzwerk.Luftfeuchtigkeit"
+        }
+    },
+    "room_switch":{
+        "arbeitszimmer": {
+            "bilderrahmen": "pilight.0.brennenstuhl2a.state", 
+            "display": "pilight.0.brennenstuhl3b.state",
+            "fernseher": "harmony.0.Harmony_Hub.Philips_TV.PowerToggle",
+            "globus": "pilight.0.brennenstuhl2d.state",
+            "harmony": "node-red.0.Haus.Dachgeschoss.Arbeitszimmer.Sonoff-Harmony.Command",
+            "heos": "pilight.0.brennenstuhl2c.state",
+            "licht": "hue.1.Arbeitszimmer.on",
+            "receiver": "harmony.0.Harmony_Hub.Onkyo_AV-Empfänger.PowerOn"
+        },
+        "schlafzimmer": {
+            "heos": "node-red.0.Haus.Obergeschoss.Schlafzimmer.HEOS.Command"
+        }
     }
 }

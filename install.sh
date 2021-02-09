@@ -57,6 +57,11 @@ function do_run {
     fi
 }
 
+function do_backup {
+    timestamp=$(date +'%Y-%m-%d_%H%M')
+    tar -C ${HOME}/.config -c -z -f /backup/${HOST}/${timestamp}_rhasspy.tar.gz rhasspy
+}
+
 task=$1
 shift
 do_$task $*
